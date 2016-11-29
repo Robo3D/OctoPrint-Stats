@@ -324,37 +324,38 @@ class StatsPlugin(octoprint.plugin.EventHandlerPlugin,
         self._plugin_manager.send_plugin_message(self._identifier, dict(fullDataset=self.fullDataset))
 
     def refreshHour(self):
-        sql = "SELECT hour, connected, disconnected, upload, print_started, print_done, print_failed, print_cancelled, print_paused, print_resumed, error FROM hourstat"
-        rows = self.statDB.query(sql)
-        hour = list()
-        connected = list()
-        disconnected = list()
-        upload = list()
-        print_started = list()
-        print_done = list()
-        print_failed = list()
-        print_cancelled = list()
-        print_paused = list()
-        print_resumed = list()
-        error = list()
+      sql = "SELECT hour, connected, disconnected, upload, print_started, print_done, print_failed, print_cancelled, print_paused, print_resumed, error FROM hourstat"
+      rows = self.statDB.query(sql)
+      hour = list()
+      connected = list()
+      disconnected = list()
+      upload = list()
+      print_started = list()
+      print_done = list()
+      print_failed = list()
+      print_cancelled = list()
+      print_paused = list()
+      print_resumed = list()
+      error = list()
 
-        for row in rows:
-            hour.append(row[0])
-            connected.append(int(row[1]))
-            disconnected.append(int(row[2]))
-            upload.append(int(row[3]))
-            print_started.append(int(row[4]))
-            print_done.append(int(row[5]))
-            print_failed.append(int(row[6]))
-            print_cancelled.append(int(row[7]))
-            print_paused.append(int(row[8]))
-            print_resumed.append(int(row[9]))
-            error.append(int(row[10]))
+      for row in rows:
+          hour.append(row[0])
+          connected.append(int(row[1]))
+          disconnected.append(int(row[2]))
+          upload.append(int(row[3]))
+          print_started.append(int(row[4]))
+          print_done.append(int(row[5]))
+          print_failed.append(int(row[6]))
+          print_cancelled.append(int(row[7]))
+          print_paused.append(int(row[8]))
+          print_resumed.append(int(row[9]))
+          error.append(int(row[10]))
 
-        self.hourDataset = {'hour': hour, 'connected': connected, 'disconnected': disconnected,
-            'upload': upload, 'print_started': print_started, 'print_done': print_done, 'print_failed': print_failed,
-            'print_cancelled': print_cancelled, 'print_paused': print_paused, 'print_resumed': print_resumed, 'error': error}
-        self._plugin_manager.send_plugin_message(self._identifier, dict(hourDataset=self.hourDataset))
+      self.hourDataset = {'hour': hour, 'connected': connected, 'disconnected': disconnected,
+          'upload': upload, 'print_started': print_started, 'print_done': print_done, 'print_failed': print_failed,
+          'print_cancelled': print_cancelled, 'print_paused': print_paused, 'print_resumed': print_resumed, 'error': error}
+      self._plugin_manager.send_plugin_message(self._identifier, dict(hourDataset=self.hourDataset))
+
 
     def refreshPrint(self):
         sql = "SELECT upload, print_started, print_done, print_failed, print_cancelled FROM printstat"

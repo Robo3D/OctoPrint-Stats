@@ -1,14 +1,16 @@
 $(function() {
-    var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+    var randomScalingFactor = function() {
+        return Math.round(Math.random() * 100)
+    };
 
     function StatsViewModel(parameters) {
         var self = this;
         self.loginState = parameters[0];
         self.settings = parameters[1];
 
-        self.tabVisible = false;
+        self.tabVisible = true;
 
-        self.pollingEnabled = false;
+        self.pollingEnabled = true;
         self.pollingTimeoutId = undefined;
 
         window.statFull = undefined;
@@ -17,40 +19,8 @@ $(function() {
         window.statdkWh = undefined;
         window.statmkWh = undefined;
 
-        self.onAfterTabChange = function(current, previous) {
-            if (current != "#tab_plugin_stats") {
-                self.tabVisible = false;
-                return;
-            }
-            self.tabVisible = true;
-
-            self.requestData();
-        };
-
-        self.renderCharts = function () {
-
-        }
-
-        self.fromResponse = function (response) {
-            // Full Stats
-            self.setFullChart(response.fullDataset);
-            // Hour Stats
-            self.setHourChart(response.hourDataset);
-            // Day Stats
-            self.setPrintChart(response.printDataset);
-            // Day kWh
-            self.setDaykWhChart(response.dkwhDataset);
-            // Month kWh
-            self.setMonthkWhChart(response.mkwhDataset);
-
-            if (self.pollingEnabled) {
-                self.pollingTimeoutId = setTimeout(function() {
-                    self.requestData();
-                }, 30000)
-            }
-        };
-
-        self.requestData = function () {
+        self.requestData = function() {
+            console.log("AAAAAAAAAHHHHHHHHHH")
             if (self.pollingTimeoutId != undefined) {
                 clearTimeout(self.pollingTimeoutId);
                 self.pollingTimeoutId = undefined;
@@ -62,7 +32,53 @@ $(function() {
                 dataType: "json",
                 success: self.fromResponse
             });
+
+            if (self.pollingEnabled) {
+                self.pollingTimeoutId = setTimeout(function() {
+                    self.requestData();
+                }, 30000);
+                console.log('POLLING POILLINGGGGGG');
+            }
+
         };
+
+        self.requestData();
+
+        // self.onAfterTabChange = function(current, previous) {
+        //     if (current != "#tab_plugin_stats") {
+        //         self.tabVisible = false;
+        //         return;
+        //     }
+        //     self.tabVisible = true;
+
+        //     self.requestData();
+        // };
+
+        self.renderCharts = function() {
+
+        }
+
+        self.fromResponse = function(response) {
+            // Full Stats
+            self.setFullChart(response.fullDataset);
+            // Hour Stats
+            self.setHourChart(response.hourDataset);
+            // Day Stats
+            self.setPrintChart(response.printDataset);
+            // Day kWh
+            self.setDaykWhChart(response.dkwhDataset);
+            // Month kWh
+            self.setMonthkWhChart(response.mkwhDataset);
+            console.log("I am from response at your service MFOF")
+
+            if (self.pollingEnabled) {
+                self.pollingTimeoutId = setTimeout(function() {
+                    self.requestData();
+                }, 30000)
+            }
+        };
+
+
 
         self.onDataUpdaterPluginMessage = function(plugin, message) {
             if (plugin != 'stats')
@@ -83,67 +99,67 @@ $(function() {
         self.setFullChart = function(ds) {
             if (ds == undefined)
                 return;
-
+            console.log('HELLO I AM ALIVE!!!! HELP ME');
             self.statfull = {
-              labels : ds.month,
-              datasets : [//Connections
-                {
-                  fillColor : "rgba(46,204,113,0.5)",
-                  strokeColor : "rgba(46,204,113,0.8)",
-                  highlightFill: "rgba(46,204,113,0.75)",
-                  highlightStroke: "rgba(46,204,113,1)",
-                  data : ds.connected,
-                  label : "Connection"
-                },// Uploads
-                {
-                  fillColor : "rgba(52,152,219,0.5)",
-                  strokeColor : "rgba(52,152,219,0.8)",
-                  highlightFill: "rgba(52,152,219,0.75)",
-                  highlightStroke: "rgba(52,152,219,1)",
-                  data : ds.upload,
-                  label : "Upload"
-                },// Prints
-                {
-                  fillColor : "rgba(41,128,185,0.5)",
-                  strokeColor : "rgba(41,128,185,0.8)",
-                  highlightFill: "rgba(41,128,185,0.75)",
-                  highlightStroke: "rgba(41,128,185,1)",
-                  data : ds.print_started,
-                  label : "Print"
-                },// Dones
-                {
-                  fillColor : "rgba(26,188,156,0.5)",
-                  strokeColor : "rgba(26,188,156,0.8)",
-                  highlightFill: "rgba(26,188,156,0.75)",
-                  highlightStroke: "rgba(26,188,156,1)",
-                  data : ds.print_done,
-                  label : "Print complete"
-                },// Failed
-                {
-                  fillColor : "rgba(231,76,60,0.5)",
-                  strokeColor : "rgba(231,76,60,0.8)",
-                  highlightFill: "rgba(231,76,60,0.75)",
-                  highlightStroke: "rgba(231,76,60,1)",
-                  data : ds.print_failed,
-                  label : "Print failed"
-                },// Cancelled
-                {
-                  fillColor : "rgba(189,195,199,0.5)",
-                  strokeColor : "rgba(189,195,199,0.8)",
-                  highlightFill: "rgba(189,195,199,0.75)",
-                  highlightStroke: "rgba(189,195,199,1)",
-                  data : ds.print_cancelled,
-                  label : "Print cancelled"
-                },// Error
-                {
-                  fillColor : "rgba(241,196,15,0.5)",
-                  strokeColor : "rgba(241,196,15,0.8)",
-                  highlightFill: "rgba(241,196,15,0.75)",
-                  highlightStroke: "rgba(241,196,15,1)",
-                  data : ds.error,
-                  label : "Error"
-                }
-              ]
+                labels: ds.month,
+                datasets: [ //Connections
+                    {
+                        fillColor: "rgba(46,204,113,0.5)",
+                        strokeColor: "rgba(46,204,113,0.8)",
+                        highlightFill: "rgba(46,204,113,0.75)",
+                        highlightStroke: "rgba(46,204,113,1)",
+                        data: ds.connected,
+                        label: "Connection"
+                    }, // Uploads
+                    {
+                        fillColor: "rgba(52,152,219,0.5)",
+                        strokeColor: "rgba(52,152,219,0.8)",
+                        highlightFill: "rgba(52,152,219,0.75)",
+                        highlightStroke: "rgba(52,152,219,1)",
+                        data: ds.upload,
+                        label: "Upload"
+                    }, // Prints
+                    {
+                        fillColor: "rgba(41,128,185,0.5)",
+                        strokeColor: "rgba(41,128,185,0.8)",
+                        highlightFill: "rgba(41,128,185,0.75)",
+                        highlightStroke: "rgba(41,128,185,1)",
+                        data: ds.print_started,
+                        label: "Print"
+                    }, // Dones
+                    {
+                        fillColor: "rgba(26,188,156,0.5)",
+                        strokeColor: "rgba(26,188,156,0.8)",
+                        highlightFill: "rgba(26,188,156,0.75)",
+                        highlightStroke: "rgba(26,188,156,1)",
+                        data: ds.print_done,
+                        label: "Print complete"
+                    }, // Failed
+                    {
+                        fillColor: "rgba(231,76,60,0.5)",
+                        strokeColor: "rgba(231,76,60,0.8)",
+                        highlightFill: "rgba(231,76,60,0.75)",
+                        highlightStroke: "rgba(231,76,60,1)",
+                        data: ds.print_failed,
+                        label: "Print failed"
+                    }, // Cancelled
+                    {
+                        fillColor: "rgba(189,195,199,0.5)",
+                        strokeColor: "rgba(189,195,199,0.8)",
+                        highlightFill: "rgba(189,195,199,0.75)",
+                        highlightStroke: "rgba(189,195,199,1)",
+                        data: ds.print_cancelled,
+                        label: "Print cancelled"
+                    }, // Error
+                    {
+                        fillColor: "rgba(241,196,15,0.5)",
+                        strokeColor: "rgba(241,196,15,0.8)",
+                        highlightFill: "rgba(241,196,15,0.75)",
+                        highlightStroke: "rgba(241,196,15,1)",
+                        data: ds.error,
+                        label: "Error"
+                    }
+                ]
             }
 
             if (self.tabVisible == true) {
@@ -152,8 +168,8 @@ $(function() {
                     window.statFull.clear();
 
                 window.statFull = new Chart(ctx).Bar(self.statfull, {
-                  responsive : true,
-                  legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+                    responsive: true,
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
                 });
 
                 document.getElementById("legend_full").innerHTML = window.statFull.generateLegend();
@@ -165,79 +181,80 @@ $(function() {
                 return;
 
             self.stathour = {
-              labels : ds.hour,
-              datasets : [//Connections
-                {
-                  fillColor : "rgba(46,204,113,0.5)",
-                  strokeColor : "rgba(46,204,113,0.8)",
-                  pointColor: "rgba(46,204,113,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(46,204,113,1)",
-                  data : ds.connected,
-                  label : "Connection"
-                },// Uploads
-                {
-                  fillColor : "rgba(52,152,219,0.5)",
-                  strokeColor : "rgba(52,152,219,0.8)",
-                  pointColor: "rgba(52,152,219,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(52,152,219,1)",
-                  data : ds.upload,
-                  label : "Upload"
-                },// Prints
-                {
-                  fillColor : "rgba(41,128,185,0.5)",
-                  strokeColor : "rgba(41,128,185,0.8)",
-                  pointColor: "rgba(41,128,185,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(41,128,185,1)",
-                  data : ds.print_started,
-                  label : "Print"
-                },// Dones
-                {
-                  fillColor : "rgba(26,188,156,0.5)",
-                  strokeColor : "rgba(26,188,156,0.8)",
-                  pointColor: "rgba(26,188,156,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(26,188,156,1)",
-                  data : ds.print_done,
-                  label : "Print complete"
-                },// Failed
-                {
-                  fillColor : "rgba(231,76,60,0.5)",
-                  strokeColor : "rgba(231,76,60,0.8)",
-                  pointColor: "rgba(231,76,60,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(231,76,60,1)",
-                  data : ds.print_failed,
-                  label : "Print failed"
-                },// Cancelled
-                {
-                  fillColor : "rgba(189,195,199,0.5)",
-                  strokeColor : "rgba(189,195,199,0.8)",
-                  pointColor: "rgba(189,195,199,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(189,195,199,1)",
-                  data : ds.print_cancelled,
-                  label : "Print cancelled"
-                },// Error
-                {
-                  fillColor : "rgba(241,196,15,0.5)",
-                  strokeColor : "rgba(241,196,15,0.8)",
-                  pointColor: "rgba(241,196,15,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(241,196,15,1)",
-                  data : ds.error,
-                  label : "Error"
-                }
-              ]
+                labels: ds.hour,
+                datasets: [ //Connections
+                    {
+                        fillColor: "rgba(46,204,113,0.5)",
+                        strokeColor: "rgba(46,204,113,0.8)",
+                        pointColor: "rgba(46,204,113,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(46,204,113,1)",
+                        data: ds.connected,
+                        label: "Connection"
+                    }, // Uploads
+                    {
+                        fillColor: "rgba(52,152,219,0.5)",
+                        strokeColor: "rgba(52,152,219,0.8)",
+                        pointColor: "rgba(52,152,219,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(52,152,219,1)",
+                        data: ds.upload,
+                        label: "Upload"
+                    }, // Prints
+                    {
+                        fillColor: "rgba(41,128,185,0.5)",
+                        strokeColor: "rgba(41,128,185,0.8)",
+                        pointColor: "rgba(41,128,185,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(41,128,185,1)",
+                        data: ds.print_started,
+                        label: "Print"
+                    }, // Dones
+                    {
+                        fillColor: "rgba(26,188,156,0.5)",
+                        strokeColor: "rgba(26,188,156,0.8)",
+                        pointColor: "rgba(26,188,156,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(26,188,156,1)",
+                        data: ds.print_done,
+                        label: "Print complete"
+                    }, // Failed
+                    {
+                        fillColor: "rgba(231,76,60,0.5)",
+                        strokeColor: "rgba(231,76,60,0.8)",
+                        pointColor: "rgba(231,76,60,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(231,76,60,1)",
+                        data: ds.print_failed,
+                        label: "Print failed"
+                    }, // Cancelled
+                    {
+                        fillColor: "rgba(189,195,199,0.5)",
+                        strokeColor: "rgba(189,195,199,0.8)",
+                        pointColor: "rgba(189,195,199,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(189,195,199,1)",
+                        data: ds.print_cancelled,
+                        label: "Print cancelled"
+                    }, // Error
+
+                    {
+                        fillColor: "rgba(241,196,15,0.5)",
+                        strokeColor: "rgba(241,196,15,0.8)",
+                        pointColor: "rgba(241,196,15,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(241,196,15,1)",
+                        data: ds.error,
+                        label: "Error"
+                    }
+                ]
             }
 
             if (self.tabVisible == true) {
@@ -246,8 +263,8 @@ $(function() {
                     window.statHourly.clear();
 
                 window.statHourly = new Chart(ctx).Radar(self.stathour, {
-                  responsive : true,
-                  legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+                    responsive: true,
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
                 });
 
                 document.getElementById("legend_hour").innerHTML = window.statHourly.generateLegend();
@@ -258,36 +275,35 @@ $(function() {
             if (ds == undefined)
                 return;
 
-            self.statprint = [
-                {// Uploads
-                  color : "rgba(52,152,219,0.5)",
-                  highlight: "rgba(52,152,219,1)",
-                  value : ds.upload,
-                  label : "Upload"
-                },// Prints
+            self.statprint = [{ // Uploads
+                    color: "rgba(52,152,219,0.5)",
+                    highlight: "rgba(52,152,219,1)",
+                    value: ds.upload,
+                    label: "Upload"
+                }, // Prints
                 {
-                  color : "rgba(41,128,185,0.5)",
-                  highlight: "rgba(41,128,185,1)",
-                  value : ds.print_started,
-                  label : "Print"
-                },// Dones
+                    color: "rgba(41,128,185,0.5)",
+                    highlight: "rgba(41,128,185,1)",
+                    value: ds.print_started,
+                    label: "Print"
+                }, // Dones
                 {
-                  color : "rgba(26,188,156,0.5)",
-                  highlight: "rgba(26,188,156,1)",
-                  value : ds.print_done,
-                  label : "Print complete"
-                },// Failed
+                    color: "rgba(26,188,156,0.5)",
+                    highlight: "rgba(26,188,156,1)",
+                    value: ds.print_done,
+                    label: "Print complete"
+                }, // Failed
                 {
-                  color : "rgba(231,76,60,0.5)",
-                  highlight: "rgba(231,76,60,1)",
-                  value : ds.print_failed,
-                  label : "Print failed"
-                },// Cancelled
+                    color: "rgba(231,76,60,0.5)",
+                    highlight: "rgba(231,76,60,1)",
+                    value: ds.print_failed,
+                    label: "Print failed"
+                }, // Cancelled
                 {
-                  color : "rgba(189,195,199,0.5)",
-                  highlight: "rgba(189,195,199,1)",
-                  value : ds.print_cancelled,
-                  label : "Print cancelled"
+                    color: "rgba(189,195,199,0.5)",
+                    highlight: "rgba(189,195,199,1)",
+                    value: ds.print_cancelled,
+                    label: "Print cancelled"
                 },
             ];
 
@@ -297,9 +313,9 @@ $(function() {
                     window.statPrint.clear();
 
                 window.statPrint = new Chart(ctx).PolarArea(self.statprint, {
-                  segmentStrokeColor: "#000000",
-                  responsive : true,
-                  legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+                    segmentStrokeColor: "#000000",
+                    responsive: true,
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
                 });
 
                 //document.getElementById("legend_print").innerHTML = window.statPrint.generateLegend();
@@ -311,29 +327,28 @@ $(function() {
                 return;
 
             self.statdkwh = {
-              labels : ds.day,
-              datasets : [
-                {// kWh
-                  fillColor : "rgba(241,196,15,0.5)",
-                  strokeColor : "rgba(241,196,15,0.8)",
-                  pointColor: "rgba(241,196,15,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(241,196,15,1)",
-                  data : ds.kwh,
-                  label : "kWh"
-                },// Print Time
-                {
-                  fillColor : "rgba(52,152,219,0.5)",
-                  strokeColor : "rgba(52,152,219,0.8)",
-                  pointColor: "rgba(52,152,219,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(52,152,219,1)",
-                  data : ds.phour,
-                  label : "Hours"
-                },
-              ]
+                labels: ds.day,
+                datasets: [{ // kWh
+                        fillColor: "rgba(241,196,15,0.5)",
+                        strokeColor: "rgba(241,196,15,0.8)",
+                        pointColor: "rgba(241,196,15,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(241,196,15,1)",
+                        data: ds.kwh,
+                        label: "kWh"
+                    }, // Print Time
+                    {
+                        fillColor: "rgba(52,152,219,0.5)",
+                        strokeColor: "rgba(52,152,219,0.8)",
+                        pointColor: "rgba(52,152,219,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(52,152,219,1)",
+                        data: ds.phour,
+                        label: "Hours"
+                    },
+                ]
             };
 
             if (self.tabVisible == true) {
@@ -342,8 +357,8 @@ $(function() {
                     window.statdkWh.clear();
 
                 window.statdkWh = new Chart(ctx).Line(self.statdkwh, {
-                  responsive : true,
-                  legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+                    responsive: true,
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
                 });
 
                 document.getElementById("legend_dkwh").innerHTML = window.statdkWh.generateLegend();
@@ -355,29 +370,28 @@ $(function() {
                 return;
 
             self.statmkwh = {
-              labels : ds.month,
-              datasets : [
-                {// kWh
-                  fillColor : "rgba(241,196,15,0.5)",
-                  strokeColor : "rgba(241,196,15,0.8)",
-                  pointColor: "rgba(241,196,15,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(241,196,15,1)",
-                  data : ds.kwh,
-                  label : "kWh"
-                },// Print Time
-                {
-                  fillColor : "rgba(52,152,219,0.5)",
-                  strokeColor : "rgba(52,152,219,0.8)",
-                  pointColor: "rgba(52,152,219,1)",
-                  pointStrokeColor: "#fff",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(52,152,219,1)",
-                  data : ds.phour,
-                  label : "Hours"
-                },
-              ]
+                labels: ds.month,
+                datasets: [{ // kWh
+                        fillColor: "rgba(241,196,15,0.5)",
+                        strokeColor: "rgba(241,196,15,0.8)",
+                        pointColor: "rgba(241,196,15,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(241,196,15,1)",
+                        data: ds.kwh,
+                        label: "kWh"
+                    }, // Print Time
+                    {
+                        fillColor: "rgba(52,152,219,0.5)",
+                        strokeColor: "rgba(52,152,219,0.8)",
+                        pointColor: "rgba(52,152,219,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(52,152,219,1)",
+                        data: ds.phour,
+                        label: "Hours"
+                    },
+                ]
             };
 
             if (self.tabVisible == true) {
@@ -386,8 +400,8 @@ $(function() {
                     window.statmkWh.clear();
 
                 window.statmkWh = new Chart(ctx).Line(self.statmkwh, {
-                  responsive : true,
-                  legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+                    responsive: true,
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
                 });
 
                 document.getElementById("legend_mkwh").innerHTML = window.statmkWh.generateLegend();
@@ -398,16 +412,15 @@ $(function() {
 
 
     ADDITIONAL_VIEWMODELS.push([
-        StatsViewModel,
-        ["loginStateViewModel", "settingsViewModel"],
+        StatsViewModel, ["loginStateViewModel", "settingsViewModel"],
         [document.getElementById("tab_plugin_stats")]
     ]);
 });
 
 function printObject(o) {
-  var out = '';
-  for (var p in o) {
-    out += p + ': ' + o[p] + '\n';
-  }
-  alert(out);
+    var out = '';
+    for (var p in o) {
+        out += p + ': ' + o[p] + '\n';
+    }
+    alert(out);
 }
