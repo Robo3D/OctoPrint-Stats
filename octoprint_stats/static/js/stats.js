@@ -101,7 +101,6 @@ $(function() {
         self.setFullChart = function(ds) {
             if (ds == undefined)
                 return;
-            console.log('HELLO I AM ALIVE!!!! HELP ME');
             self.statfull = {
                 labels: ds.month,
                 datasets: [ //Connections
