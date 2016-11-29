@@ -231,7 +231,7 @@ class StatsPlugin(octoprint.plugin.EventHandlerPlugin,
                   octoprint.plugin.TemplatePlugin,
                   octoprint.plugin.SettingsPlugin):
 
-    def on_after_startup(self):
+    def on_startup(self,host,port):
         self._logger.info("Printer Stats")
         self.statDB = StatsDB(self)
 
