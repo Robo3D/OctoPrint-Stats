@@ -233,7 +233,10 @@ class StatsPlugin(octoprint.plugin.EventHandlerPlugin,
 
     def on_startup(self,host,port):
         self._logger.info("Printer Stats")
-        self.statDB = StatsDB(self)
+        try:
+          self.statDB
+        except AttributeError:
+          self.statDB = StatsDB(self)
 
         self.refreshFull()
         self.refreshHour()
@@ -512,11 +515,16 @@ class StatsPlugin(octoprint.plugin.EventHandlerPlugin,
             sql = "INSERT INTO error (event_time, perror) VALUES ('%s', '%s')" % (datetime.datetime.today(), perror)
 
         if sql != '':
-            self.statDB.execute(sql)
-            self.refreshFull()
-            self.refreshHour()
-            self.refreshPrint()
-            self.refreshWatts()
+          try:
+            self.statDB
+          except AttributeError:
+            self.statDB = StatsDB(self)
+
+          self.statDB.execute(sql)
+          self.refreshFull()
+          self.refreshHour()
+          self.refreshPrint()
+          self.refreshWatts()
 
     ##~~ Softwareupdate hook
     def get_update_information(self):
