@@ -11,6 +11,7 @@ $(function() {
         self.tabVisible = true;
 
         self.pollingEnabled = true;
+        self.startup = true;
         self.pollingTimeoutId = undefined;
 
         window.statFull = undefined;
@@ -20,7 +21,6 @@ $(function() {
         window.statmkWh = undefined;
 
         self.requestData = function() {
-            console.log("AAAAAAAAAHHHHHHHHHH")
             if (self.pollingTimeoutId != undefined) {
                 clearTimeout(self.pollingTimeoutId);
                 self.pollingTimeoutId = undefined;
@@ -33,11 +33,11 @@ $(function() {
                 success: self.fromResponse
             });
 
-            if (self.pollingEnabled) {
+            if (self.pollingEnabled && self.startup) {
                 self.pollingTimeoutId = setTimeout(function() {
                     self.requestData();
-                }, 30000);
-                console.log('POLLING POILLINGGGGGG');
+                }, 2000);
+
             }
 
         };
@@ -59,6 +59,8 @@ $(function() {
         }
 
         self.fromResponse = function(response) {
+            self.startup = false;
+            self.pollingEnabled = false;
             // Full Stats
             self.setFullChart(response.fullDataset);
             // Hour Stats
