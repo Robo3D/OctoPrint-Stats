@@ -536,12 +536,12 @@ class StatsPlugin(octoprint.plugin.EventHandlerPlugin,
 
                 # version check: github repository
                 type="github_release",
-                user="amsbr",
+                user="Robo3D",
                 repo="OctoPrint-Stats",
                 current=self._plugin_version,
 
                 # update method: pip w/ dependency links
-                pip="https://github.com/amsbr/OctoPrint-Stats/archive/{target_version}.zip"
+                pip="https://github.com/Robo3D/OctoPrint-Stats/archive/{target_version}.zip"
             )
         )
 
@@ -550,7 +550,7 @@ class StatsPlugin(octoprint.plugin.EventHandlerPlugin,
 # ("OctoPrint-PluginSkeleton"), you may define that here. Same goes for the other metadata derived from setup.py that
 # can be overwritten via __plugin_xyz__ control properties. See the documentation for that.
 __plugin_name__ = "Printer Stats"
-__plugin_version__ = "1.0.0"
+__plugin_version__ = "1.0.1"
 __plugin_description__ = "Statistics of your 3D Printer"
 
 def __plugin_load__():
