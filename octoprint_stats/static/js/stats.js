@@ -71,7 +71,6 @@ $(function() {
             self.setDaykWhChart(response.dkwhDataset);
             // Month kWh
             self.setMonthkWhChart(response.mkwhDataset);
-            console.log("I am from response at your service MFOF")
 
             if (self.pollingEnabled) {
                 self.pollingTimeoutId = setTimeout(function() {
