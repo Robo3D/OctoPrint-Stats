@@ -44,15 +44,15 @@ $(function() {
 
         self.requestData();
 
-        // self.onAfterTabChange = function(current, previous) {
-        //     if (current != "#tab_plugin_stats") {
-        //         self.tabVisible = false;
-        //         return;
-        //     }
-        //     self.tabVisible = true;
+        self.onAfterTabChange = function(current, previous) {
+            if (current != "#tab_plugin_stats") {
+                self.tabVisible = false;
+                return;
+            }
+            self.tabVisible = true;
 
-        //     self.requestData();
-        // };
+            self.requestData();
+        };
 
         self.renderCharts = function() {
 
